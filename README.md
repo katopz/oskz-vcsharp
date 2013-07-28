@@ -3,7 +3,18 @@ oskz-vcsharp
 
 Will open Windows On-Screen Keyboard (osk.exe) with system key (Windows, Menu, Ctrl, Alt, F1-F12) restricted.
 
-For commercial use you must [feed](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=katopz%40sleepydesign%2ecom&item_name=sleepydesign&no_shipping=0&no_note=1&tax=0&currency_code=USD&charset=UTF%2d8) my [cat](http://instagram.com/katopz) 
+Required
+----
+* [Microsoft Visual Studio 2012 Express](http://www.microsoft.com/visualstudio/eng/downloads)
+* [Application and Global Mouse and Keyboard Hooks .Net Libary in C#](https://globalmousekeyhook.codeplex.com/) 
+
+Test
+----
+This project test via Windows 7.
+
+Cat food is not free!
+----
+So please [feed](https://www.paypal.com/cgi-bin/webscr?cmd=_xclick&business=katopz%40sleepydesign%2ecom&item_name=sleepydesign&no_shipping=0&no_note=1&tax=0&currency_code=USD&charset=UTF%2d8) my [cat](http://instagram.com/katopz) 
 any $ is welcome :)
 - - -
 
