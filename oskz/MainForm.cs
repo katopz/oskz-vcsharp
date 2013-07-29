@@ -1,4 +1,5 @@
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 using MouseKeyboardActivityMonitor.WinApi;
 using System.Diagnostics;
@@ -19,6 +20,8 @@ namespace MouseKeyboardActivityMonitor.OSKZ
 
         public MainForm()
         {
+            GimmeTray();
+
             // init
             InitializeComponent();
 
@@ -26,8 +29,36 @@ namespace MouseKeyboardActivityMonitor.OSKZ
             m_KeyboardHookManager = new KeyboardHookListener(new GlobalHooker());
             m_KeyboardHookManager.Enabled = true;
 
-            // Show OSK
-            GimmeOSK();
+            // Show OSK if need
+            //GimmeOSK();
+        }
+
+        // Tray ===============================================================================================================
+
+        private NotifyIcon trayIcon;
+        private ContextMenu trayMenu;
+
+        private void GimmeTray()
+        {
+            // Create a simple tray menu with only one item.
+            trayMenu = new ContextMenu();
+            trayMenu.MenuItems.Add("Exit", OnExit);
+
+            // Create a tray icon.
+            trayIcon = new NotifyIcon();
+            trayIcon.Text = "Windows System Key Blocker";
+            trayIcon.Icon = new Icon(SystemIcons.Shield, 40, 40);
+
+            // Add menu to tray icon and show it.
+            trayIcon.ContextMenu = trayMenu;
+            trayIcon.Visible = true;
+        }
+
+        private void OnExit(object sender, EventArgs e)
+        {
+            Console.WriteLine(" ! OSK exited.");
+            m_KeyboardHookManager.Dispose();
+            Application.Exit();
         }
 
         // OSK ===============================================================================================================
