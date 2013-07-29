@@ -34,22 +34,41 @@ namespace MouseKeyboardActivityMonitor
         {
             KeyEventArgsExt e = KeyEventArgsExt.FromRawData(wParam, lParam, IsGlobal);
 
-            InvokeKeyDown(e);
-            InvokeKeyPress(wParam, lParam);
-            InvokeKeyUp(e);
+            // not allow
+            Keys[] notAllowedKeys = {  Keys.LControlKey, Keys.RControlKey, Keys.LMenu, Keys.RMenu, Keys.LWin, Keys.RWin, Keys.Apps, Keys.Alt, Keys.Control, Keys.Tab, Keys.F1, Keys.F2, Keys.F3, Keys.F4, Keys.F5, Keys.F6, Keys.F7, Keys.F8, Keys.F9, Keys.F10, Keys.F11, Keys.F12 };
 
-            if (e.IsKeyDown)
+            Console.WriteLine(" * Oh! : " + e.KeyData);
+
+            if ((Array.IndexOf(notAllowedKeys, e.KeyData) != -1) || e.Control || e.Alt || (e.Shift && e.Alt))
             {
-                // not allow
-                Keys[] dinosaurs = { Keys.LControlKey, Keys.RControlKey, Keys.LMenu, Keys.RMenu, Keys.LWin, Keys.RWin, Keys.Apps, Keys.Tab, Keys.F1, Keys.F2, Keys.F3, Keys.F4, Keys.F5, Keys.F6, Keys.F7, Keys.F8, Keys.F9, Keys.F10, Keys.F11, Keys.F12 };
-
-                if (Array.IndexOf(dinosaurs, e.KeyData) != -1)
-                {
-                    return e.Handled;
-                }
+                Console.WriteLine(" * Block1 : " + e.KeyData);
+                return e.Handled;
             }
+            else if (e.KeyData.ToString() == "Tab, Shift" || e.KeyData.ToString() == "Shift, Tab")
+            {
+                // not allow modifier with tab!
+                Console.WriteLine(" * Block2 : " + e.KeyData);
+                return e.Handled;
+            }
+            else 
+            {
+                // for debug purpose
+                string st = e.KeyData.ToString();
+                string[] s = st.Split(',');
+                Console.WriteLine("st:" + st);
+                Console.WriteLine("s:" + s.Length);
 
-            return !e.Handled;
+                foreach (var keyData in s)
+                {
+                    Console.WriteLine(" * keyData : [" + keyData + "]");
+                }
+
+                // allow
+                InvokeKeyDown(e);
+                InvokeKeyPress(wParam, lParam);
+                InvokeKeyUp(e);
+                return !e.Handled;
+            }
         }
 
         /// <summary>
