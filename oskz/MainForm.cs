@@ -16,7 +16,7 @@ namespace MouseKeyboardActivityMonitor.OSKZ
 {
     public partial class MainForm : Form
     {
-        private readonly KeyboardHookListener m_KeyboardHookManager;
+        public static KeyboardHookListener m_KeyboardHookManager;
 
         public MainForm()
         {
@@ -31,6 +31,36 @@ namespace MouseKeyboardActivityMonitor.OSKZ
 
             // Show OSK if need
             //GimmeOSK();
+
+            // hide sys
+            //HideToolbars();
+            //HideStart();
+
+            /*
+            ShowToolbars();
+            ShowStart();
+             * */
+        }
+
+        // Start ===============================================================================================================
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr FindWindowEx(
+               IntPtr parentHwnd,
+               IntPtr childAfterHwnd,
+               IntPtr className,
+               string windowText);
+
+        private void HideStart()
+        {
+            IntPtr hwndOrb = FindWindowEx(IntPtr.Zero, IntPtr.Zero, (IntPtr)0xC017, null);
+            ShowWindow((int)hwndOrb, SW_HIDE);
+        }
+
+        private void ShowStart()
+        {
+            IntPtr hwndOrb = FindWindowEx(IntPtr.Zero, IntPtr.Zero, (IntPtr)0xC017, null);
+            ShowWindow((int)hwndOrb, SW_SHOW);
         }
 
         // Tray ===============================================================================================================
@@ -57,8 +87,32 @@ namespace MouseKeyboardActivityMonitor.OSKZ
         private void OnExit(object sender, EventArgs e)
         {
             Console.WriteLine(" ! OSK exited.");
+            trayIcon.Dispose();
             m_KeyboardHookManager.Dispose();
             Application.Exit();
+            ShowToolbars();
+        }
+
+        // Toolbars ===============================================================================================================
+
+        private const int SW_HIDE = 0;
+        private const int SW_SHOW = 1;
+
+        [DllImport("user32.dll")]
+        private static extern int FindWindow(string className, string windowText);
+        [DllImport("user32.dll")]
+        private static extern int ShowWindow(int hwnd, int command);
+
+        private void HideToolbars()
+        {
+            int hWnd = FindWindow("Shell_TrayWnd", "");
+            ShowWindow(hWnd, SW_HIDE);
+        }
+
+        private void ShowToolbars()
+        {
+            int hWnd = FindWindow("Shell_TrayWnd", "");
+            ShowWindow(hWnd, SW_SHOW);
         }
 
         // OSK ===============================================================================================================
@@ -117,6 +171,11 @@ namespace MouseKeyboardActivityMonitor.OSKZ
         private void myProcess_HasExited(object sender, System.EventArgs e)
         {
             Console.WriteLine(" ! OSK exited.");
+
+            ShowToolbars();
+            ShowStart();
+
+            trayIcon.Dispose();
             m_KeyboardHookManager.Dispose();
             Application.Exit();
         }
