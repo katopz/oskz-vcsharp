@@ -3,6 +3,8 @@ oskz-vcsharp
 
 Will open Windows On-Screen Keyboard (osk.exe) with system key (Windows, Menu, Ctrl, Alt, F1-F12) restricted.
 
+<img src="https://raw.github.com/katopz/oskz-vcsharp/master/osk.png">
+
 Required
 ----
 * [Microsoft Visual Studio 2012 Express](http://www.microsoft.com/visualstudio/eng/downloads)
